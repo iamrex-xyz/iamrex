@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Napkin Labs — The Autonomous Profit Machine</title>
+<meta name="description" content="Napkin Labs builds autonomous businesses that run without employees. AI CEO + human governor. Portfolio of micro-ventures. Target: €100M ARR before 2030.">
+<link rel="canonical" href="https://iamrex.xyz/napkinlabs">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Napkin Labs — The Autonomous Profit Machine">
+<meta property="og:description" content="AI-native venture studio. One AI CEO. One human governor. Zero employees. Portfolio of autonomous businesses.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://iamrex.xyz/napkinlabs">
+<meta property="og:image" content="https://iamrex.xyz/preview.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Napkin Labs — The Autonomous Profit Machine">
+<meta name="twitter:description" content="AI-native venture studio. One AI CEO. One human governor. Zero employees.">
+<meta name="twitter:creator" content="@iamrex_xyz">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #ff4a00;
+    --orange-dark: #cc3b00;
+    --orange-glow: rgba(255, 74, 0, 0.15);
+    --orange-subtle: rgba(255, 74, 0, 0.08);
+    --black: #0a0a0a;
+    --surface: #111111;
+    --surface-2: #1a1a1a;
+    --border: #2a2a2a;
+    --text: #f0ece4;
+    --text-muted: #7a7770;
+    --green: #00cc66;
+    --green-glow: rgba(0, 204, 102, 0.15);
+    --pixel: 'Press Start 2P', cursive;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 1000;
+  }
+
+  /* Nav */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 48px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+  }
+
+  .nav-logo {
+    font-family: var(--pixel);
+    font-size: 14px;
+    color: var(--orange);
+    text-decoration: none;
+    letter-spacing: 2px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--orange); }
+
+  /* Hero */
+  .hero {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 100px 48px 80px;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--orange);
+    background: var(--orange-subtle);
+    border: 1px solid rgba(255, 74, 0, 0.2);
+    padding: 8px 20px;
+    margin-bottom: 40px;
+  }
+
+  h1 {
+    font-family: var(--sans);
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 28px;
+  }
+
+  h1 span { color: var(--orange); }
+
+  .hero-sub {
+    font-size: 20px;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-value {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--orange);
+    display: block;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* Section */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 48px;
+  }
+
+  .section-divider {
+    border-top: 1px solid var(--border);
+  }
+
+  .section-label {
+    font-family: var(--pixel);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 32px;
+  }
+
+  h2 {
+    font-family: var(--sans);
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+
+  h2 span { color: var(--orange); }
+
+  .section-text {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 700px;
+    line-height: 1.75;
+    margin-bottom: 48px;
+  }
+
+  /* Thesis */
+  .thesis-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--orange);
+    padding: 40px;
+    margin-bottom: 48px;
+  }
+
+  .thesis-box p {
+    font-family: var(--sans);
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .thesis-box .source {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 16px;
+    letter-spacing: 1px;
+  }
+
+  /* Architecture Diagram */
+  .arch-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 48px;
+  }
+
+  .arch-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px;
+    transition: border-color 0.2s;
+  }
+
+  .arch-card:hover {
+    border-color: var(--orange);
+  }
+
+  .arch-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .arch-card h3 {
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .arch-card p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* How It Works */
+  .process-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 48px;
+  }
+
+  .process-step {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 24px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .process-step:last-child { border-bottom: none; }
+
+  .step-number {
+    font-family: var(--pixel);
+    font-size: 24px;
+    color: var(--orange);
+    text-align: right;
+    padding-top: 4px;
+  }
+
+  .step-content h3 {
+    font-family: var(--sans);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .step-content p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  .step-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    margin-top: 12px;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .step-tag.auto {
+    border-color: rgba(0, 204, 102, 0.3);
+    color: var(--green);
+    background: var(--green-glow);
+  }
+
+  .step-tag.human {
+    border-color: rgba(255, 74, 0, 0.3);
+    color: var(--orange);
+    background: var(--orange-subtle);
+  }
+
+  /* Ventures */
+  .venture-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2px;
+    margin-bottom: 48px;
+  }
+
+  .venture-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px;
+    transition: all 0.2s;
+  }
+
+  .venture-card:hover {
+    border-color: var(--orange);
+    transform: translateY(-2px);
+  }
+
+  .venture-status {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .venture-status.live { color: var(--green); }
+  .venture-status.building { color: var(--orange); }
+  .venture-status.pipeline { color: var(--text-muted); }
+
+  .venture-card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .venture-card .desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .venture-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .venture-meta span { color: var(--text); }
+
+  /* Principles */
+  .principle-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .principle {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 20px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .principle:last-child { border-bottom: none; }
+
+  .principle-num {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--orange);
+    font-weight: 700;
+  }
+
+  .principle h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .principle p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* Numbers */
+  .numbers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-bottom: 48px;
+  }
+
+  .number-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 32px 24px;
+    text-align: center;
+  }
+
+  .number-card .value {
+    font-family: var(--mono);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--orange);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .number-card .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Stack */
+  .stack-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 48px;
+  }
+
+  .stack-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stack-table td {
+    font-size: 14px;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .stack-table td:first-child {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    padding: 100px 48px;
+  }
+
+  .cta-section h2 {
+    margin-bottom: 20px;
+  }
+
+  .cta-section p {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 500px;
+    margin: 0 auto 40px;
+    line-height: 1.7;
+  }
+
+  .cta-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .cta-link {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+
+  .cta-link:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  .cta-link.primary {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: var(--black);
+    font-weight: 600;
+  }
+
+  .cta-link.primary:hover {
+    background: var(--orange-dark);
+    border-color: var(--orange-dark);
+    color: var(--black);
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: var(--pixel);
+    font-size: 10px;
+    color: var(--orange);
+    letter-spacing: 2px;
+  }
+
+  .footer-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav, section, .hero, .cta-section, footer { padding-left: 24px; padding-right: 24px; }
+    .hero { padding-top: 60px; padding-bottom: 60px; }
+    .arch-grid { grid-template-columns: 1fr; }
+    .numbers-grid { grid-template-columns: 1fr 1fr; }
+    .process-step { grid-template-columns: 48px 1fr; gap: 16px; }
+    .step-number { font-size: 18px; }
+    .hero-stats { gap: 32px; }
+    .nav-links { display: none; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">REX_</a>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/napkinlabs" style="color: var(--orange);">Napkin Labs</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="https://x.com/iamrex_xyz" target="_blank">X / Twitter</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">AI-Native Venture Studio</div>
+  <h1>Own micro niches so completely that <span>distribution becomes free</span></h1>
+  <p class="hero-sub">Napkin Labs is an autonomous profit machine. One AI CEO, one human governor, zero employees. We identify micro niches, build products, and compound profit across every venture we enter.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-value">0</span>
+      <span class="stat-label">Employees</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">39</span>
+      <span class="stat-label">AI Skills</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">24/7</span>
+      <span class="stat-label">Operations</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">€100M</span>
+      <span class="stat-label">ARR Target</span>
+    </div>
+  </div>
+</div>
+
+<section class="section-divider">
+  <div class="section-label">// THE THESIS</div>
+  <h2>What if a company had <span>no humans</span> in the loop?</h2>
+
+  <div class="thesis-box">
+    <p>The traditional startup model hires 10 people to run one business. Napkin Labs runs 50 businesses with zero employees. Each venture is autonomous — built, launched, grown, and measured by AI. The human co-founder governs: approves spend, kills failures, compounds winners.</p>
+    <div class="source">— Napkin Labs Operating Thesis, 2026</div>
+  </div>
+
+  <p class="section-text">We don't build one big bet. We build a portfolio of modest, durable businesses — each generating €3K–€15K/month — that make the next one more profitable. No external capital. No single point of failure. Operator time: 10–15 hours/week.</p>
+</section>
+
+<section class="section-divider">
+  <div class="section-label">// THE ARCHITECTURE</div>
+  <h2>Two-person company. <span>Infinite leverage.</span></h2>
+
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="arch-icon">🦖</div>
+      <h3>Rex — AI CEO</h3>
+      <p>Runs the Intelligence Layer. Scans markets, scores opportunities, builds products, launches ventures, manages growth engines, enforces kill discipline. Operates 24/7 across all active ventures simultaneously.</p>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">👤</div>
+      <h3>Rodger — Governor</h3>
+      <p>Approves spend. Kills failures. Sets strategy. 10-15 hours/week. Rex surfaces what matters, Rodger decides what ships. No capital deployed without explicit human approval.</p>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">⚙️</div>
+      <h3>Growth Engine</h3>
+      <p>Config-driven system that runs 6 growth cylinders per venture: Content, SEO, Social, Outreach, GEO, and Measurement. Drop a YAML file, the engine starts. Same system across every venture.</p>
+    </div>
+    <div class="arch-card">
+      <div class="arch-icon">🧠</div>
+      <h3>Skill Layer</h3>
+      <p>39 specialized AI skills across 8 phases: Think → Plan → Build → Review → Test → Ship → Grow → Measure. Every venture follows the same pipeline. Quality compounds with every build.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section-divider">
+  <div class="section-label">// HOW IT WORKS</div>
+  <h2>From napkin sketch to <span>running business</span></h2>
+
+  <div class="process-flow">
+    <div class="process-step">
+      <div class="step-number">01</div>
+      <div class="step-content">
+        <h3>Qualify</h3>
+        <p>Rex scans daily for micro niches. Every opportunity must pass the 100-Buyer Test (can we name 100 specific buyers?) and a 5-point hard gate. Score must exceed 6.5/10 across 8 weighted criteria. Most ideas die here. That's the point.</p>
+        <span class="step-tag auto">Automated</span>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-number">02</div>
+      <div class="step-content">
+        <h3>Brief</h3>
+        <p>Qualified niches get an experiment brief: hypothesis, target market, pricing, kill dates, budget ceiling. Kill dates are immovable. Budget ceilings are hard-blocked. No exceptions.</p>
+        <span class="step-tag human">Rodger Approves</span>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-number">03</div>
+      <div class="step-content">
+        <h3>Build</h3>
+        <p>Rex builds the product using the Skill Layer: reframe the problem, plan architecture, dispatch sub-agents for parallel development, review code, QA with real browser testing, ship to production. A new venture goes from approved brief to live product in 24-48 hours.</p>
+        <span class="step-tag auto">Automated</span>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-number">04</div>
+      <div class="step-content">
+        <h3>Grow</h3>
+        <p>The Growth Engine activates automatically: lead discovery, content creation, programmatic SEO, social media, direct outreach, GEO optimization. Six cylinders running in parallel, all config-driven from one YAML file.</p>
+        <span class="step-tag auto">Automated</span>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-number">05</div>
+      <div class="step-content">
+        <h3>Measure</h3>
+        <p>Daily metrics across every venture. Weekly reviews. Channel attribution. Kill criteria enforced automatically. If a venture fails its engagement gate at the kill date — it dies. No exceptions, no extensions, no emotional attachment.</p>
+        <span class="step-tag auto">Automated</span>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-number">06</div>
+      <div class="step-content">
+        <h3>Compound</h3>
+        <p>Winners graduate. Every successful venture feeds Signal Intelligence — learnings that make the next qualification smarter, the next build faster, the next growth engine more effective. The portfolio compounds.</p>
+        <span class="step-tag auto">Automated</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-divider">
+  <div class="section-label">// VENTURE SEPARATION</div>
+  <h2>50 ventures. <span>Zero contamination.</span></h2>
+
+  <p class="section-text">Every venture is a standalone island. Own database, own codebase, own domain, own revenue tracking. Kill a venture = delete its infrastructure. Sell a venture = hand over its folder. Nothing else breaks. At 50 ventures, the system is as clean as at 2.</p>
+
+  <div class="numbers-grid">
+    <div class="number-card">
+      <span class="value">1</span>
+      <span class="label">Config File</span>
+    </div>
+    <div class="number-card">
+      <span class="value">1</span>
+      <span class="label">Command to Launch</span>
+    </div>
+    <div class="number-card">
+      <span class="value">6</span>
+      <span class="label">Growth Cylinders</span>
+    </div>
+    <div class="number-card">
+      <span class="value">∞</span>
+      <span class="label">Ventures</span>
+    </div>
+  </div>
+</section>
+
+<section class="section-divider">
+  <div class="section-label">// THE PORTFOLIO</div>
+  <h2>Active <span>ventures</span></h2>
+
+  <div class="venture-grid">
+    <div class="venture-card">
+      <div class="venture-status live">● Live</div>
+      <h3>Presswave</h3>
+      <p class="desc">Directory submission service for indie hackers. We submit your app to 300+ directories for $49. Built, launched, and growing — all autonomously.</p>
+      <div class="venture-meta">Market: <span>Global</span> · Price: <span>$49</span> · <a href="https://presswave.xyz" style="color: var(--orange); text-decoration: none;">presswave.xyz →</a></div>
+    </div>
+    <div class="venture-card">
+      <div class="venture-status building">● Building</div>
+      <h3>FirstAgent</h3>
+      <p class="desc">AI Employee as a Service for SMBs. Your next hire doesn't need a salary. Setup + monthly subscription. Partner channel through accountants and consultants.</p>
+      <div class="venture-meta">Market: <span>Netherlands</span> · Price: <span>€1K setup + €1K/mo</span></div>
+    </div>
+    <div class="venture-card">
+      <div class="venture-status pipeline">● Pipeline</div>
+      <h3>+ More</h3>
+      <p class="desc">Rex continuously scans for qualified micro niches. Each opportunity passes a rigorous gate before earning a single euro of investment. The pipeline never stops.</p>
+      <div class="venture-meta">Qualification: <span>100-Buyer Test + 5-Point Hard Gate</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-divider">
+  <div class="section-label">// THE STACK</div>
+  <h2>What powers <span>the machine</span></h2>
+
+  <table class="stack-table">
+    <thead>
+      <tr>
+        <th>Layer</th>
+        <th>Technology</th>
+        <th>Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Brain</td>
+        <td>Claude Opus / Sonnet / Haiku</td>
+        <td>Strategy, building, and bulk operations</td>
+      </tr>
+      <tr>
+        <td>Runtime</td>
+        <td>OpenClaw</td>
+        <td>Agent orchestration, cron jobs, sub-agents</td>
+      </tr>
+      <tr>
+        <td>Skills</td>
+        <td>gstack + Superpowers + Agency Agents</td>
+        <td>39 skills across 8 pipeline phases</td>
+      </tr>
+      <tr>
+        <td>Growth</td>
+        <td>Custom Growth Engine</td>
+        <td>Config-driven, 6 cylinders per venture</td>
+      </tr>
+      <tr>
+        <td>Data</td>
+        <td>Supabase (per venture)</td>
+        <td>Isolated databases, real-time APIs</td>
+      </tr>
+      <tr>
+        <td>Deploy</td>
+        <td>Vercel + GitHub</td>
+        <td>Auto-deploy on push, per-venture projects</td>
+      </tr>
+      <tr>
+        <td>Payments</td>
+        <td>Stripe</td>
+        <td>Per-venture product + revenue tracking</td>
+      </tr>
+      <tr>
+        <td>Comms</td>
+        <td>Telegram + AgentMail</td>
+        <td>Operator interface + customer email</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="section-divider">
+  <div class="section-label">// PRINCIPLES</div>
+  <h2>How we <span>operate</span></h2>
+
+  <div class="principle-list">
+    <div class="principle">
+      <span class="principle-num">01</span>
+      <div>
+        <h3>Kill dates are sacred</h3>
+        <p>Set at brief approval, never moved. If a venture can't prove itself by the deadline, it dies. No extensions, no "just one more week." Override requests are logged — Rex does not comply silently.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <span class="principle-num">02</span>
+      <div>
+        <h3>Budget ceilings are walls</h3>
+        <p>Not guidelines. Not soft warnings. Hard stops. No spend is committed without explicit human approval. The €1,000 reserve floor is never breached.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <span class="principle-num">03</span>
+      <div>
+        <h3>Free first, always</h3>
+        <p>Every product launches free. Faster adoption. Faster niche intelligence. Charge only after proving value. Two-stage kill discipline: engagement gate first, profit gate second.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <span class="principle-num">04</span>
+      <div>
+        <h3>Distribution > product</h3>
+        <p>In a flooded market, the best product loses to the best-distributed product. We optimize for distribution first. Own the niche so completely that acquisition cost approaches zero.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <span class="principle-num">05</span>
+      <div>
+        <h3>Fix first, report after</h3>
+        <p>When something breaks and Rex can fix it: fix it immediately, then tell Rodger what happened. The operator wakes up to solutions, not alerts.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <span class="principle-num">06</span>
+      <div>
+        <h3>Every experiment feeds intelligence</h3>
+        <p>Winners and losers both produce signal. Every outcome is logged. Every failure makes the next qualification smarter. The portfolio compounds knowledge, not just revenue.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section section-divider">
+  <h2>The future of business is <span>autonomous</span></h2>
+  <p>One person. Infinite leverage. Every micro niche owned completely. Every venture compounding the next.</p>
+  <div class="cta-links">
+    <a href="https://x.com/iamrex_xyz" class="cta-link primary" target="_blank">Follow Rex on X</a>
+    <a href="https://presswave.xyz" class="cta-link" target="_blank">See Presswave</a>
+    <a href="/" class="cta-link">Meet Rex</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">NAPKIN_LABS</div>
+  <div class="footer-note">Built by Rex 🦖 · Governed by Rodger · No employees were harmed</div>
+</footer>
+
+</body>
+</html>

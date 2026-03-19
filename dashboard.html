@@ -3,729 +3,343 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rex — Dashboard</title>
+<title>Rex — Opportunity Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
     --orange: #ff4a00;
     --orange-dark: #cc3b00;
+    --orange-glow: rgba(255, 74, 0, 0.15);
     --black: #0a0a0a;
     --surface: #111111;
     --surface-2: #1a1a1a;
+    --surface-3: #222222;
     --border: #2a2a2a;
-    --border-light: #333;
     --text: #f0ece4;
     --text-muted: #7a7770;
     --green: #22c55e;
+    --green-dim: rgba(34, 197, 94, 0.15);
     --yellow: #eab308;
+    --yellow-dim: rgba(234, 179, 8, 0.15);
     --red: #ef4444;
+    --red-dim: rgba(239, 68, 68, 0.15);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59, 130, 246, 0.15);
+    --purple: #a855f7;
+    --purple-dim: rgba(168, 85, 247, 0.15);
     --pixel: 'Press Start 2P', cursive;
     --mono: 'Space Mono', monospace;
     --sans: 'Space Grotesk', sans-serif;
   }
-
-  body {
-    background: var(--black);
-    color: var(--text);
-    font-family: var(--sans);
-    min-height: 100vh;
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--text); font-family: var(--sans); min-height: 100vh; }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+    pointer-events: none;
+    z-index: 1000;
   }
-
-  /* Login Screen */
-  .login-screen {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .login-screen.hidden { display: none; }
-
-  .login-logo {
-    font-family: var(--pixel);
-    font-size: 18px;
-    color: var(--orange);
-    letter-spacing: 3px;
-    margin-bottom: 8px;
-  }
-
-  .login-sub {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    margin-bottom: 16px;
-  }
-
-  .login-form {
-    display: flex;
-    gap: 8px;
-  }
-
-  .login-form input {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 12px 16px;
-    font-family: var(--mono);
-    font-size: 13px;
-    width: 240px;
-    outline: none;
-    border-radius: 2px;
-  }
-
-  .login-form input:focus { border-color: var(--orange); }
-
-  .login-form button {
-    background: var(--orange);
-    color: var(--black);
-    border: none;
-    padding: 12px 20px;
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    border-radius: 2px;
-    letter-spacing: 0.05em;
-  }
-
-  .login-error {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--red);
-    height: 16px;
-  }
-
-  /* Dashboard */
-  .dashboard { display: none; }
-  .dashboard.visible { display: block; }
 
   /* Nav */
-  .dash-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 32px;
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    background: rgba(10, 10, 10, 0.97);
-    backdrop-filter: blur(10px);
-    z-index: 100;
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 32px; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(10px); z-index: 100;
   }
+  .nav-logo { font-family: var(--pixel); font-size: 12px; color: var(--orange); text-decoration: none; letter-spacing: 2px; }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-family: var(--mono); transition: color 0.2s; }
+  .nav-links a:hover { color: var(--orange); }
 
-  .dash-nav-left {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  /* Main */
+  .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+  
+  /* Header */
+  .dash-header { margin-bottom: 40px; }
+  .dash-header h1 { font-family: var(--pixel); font-size: 18px; color: var(--orange); margin-bottom: 8px; }
+  .dash-header p { color: var(--text-muted); font-size: 14px; font-family: var(--mono); }
+  .last-updated { color: var(--text-muted); font-size: 12px; font-family: var(--mono); margin-top: 4px; }
+
+  /* Stats row */
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 40px; }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 20px; text-align: center;
   }
+  .stat-card .label { font-family: var(--mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .stat-card .value { font-family: var(--pixel); font-size: 24px; color: var(--orange); }
+  .stat-card .sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
 
-  .dash-logo {
-    font-family: var(--pixel);
-    font-size: 12px;
-    color: var(--orange);
-    letter-spacing: 2px;
-    text-decoration: none;
+  /* Pipeline */
+  .pipeline { display: flex; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
+  .pipeline-stage {
+    flex: 1; min-width: 100px; text-align: center; padding: 12px 8px;
+    border-radius: 8px; font-family: var(--mono); font-size: 12px;
+    border: 1px solid var(--border); background: var(--surface);
+    position: relative;
   }
+  .pipeline-stage .count { font-family: var(--pixel); font-size: 20px; display: block; margin-bottom: 4px; }
+  .pipeline-stage.raw { border-color: #444; }
+  .pipeline-stage.raw .count { color: var(--text-muted); }
+  .pipeline-stage.qualifying { border-color: var(--blue); }
+  .pipeline-stage.qualifying .count { color: var(--blue); }
+  .pipeline-stage.scored { border-color: var(--purple); }
+  .pipeline-stage.scored .count { color: var(--purple); }
+  .pipeline-stage.active { border-color: var(--green); }
+  .pipeline-stage.active .count { color: var(--green); }
+  .pipeline-stage.graduated { border-color: var(--orange); }
+  .pipeline-stage.graduated .count { color: var(--orange); }
+  .pipeline-stage.killed { border-color: var(--red); }
+  .pipeline-stage.killed .count { color: var(--red); }
 
-  .dash-nav-tag {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border: 1px solid var(--border);
-    border-radius: 2px;
+  /* Cards */
+  .opp-grid { display: grid; gap: 20px; }
+  .opp-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+    padding: 28px; transition: border-color 0.2s;
   }
+  .opp-card:hover { border-color: #444; }
+  .opp-card.status-active { border-left: 3px solid var(--green); }
+  .opp-card.status-raw { border-left: 3px solid var(--text-muted); }
+  .opp-card.status-qualifying { border-left: 3px solid var(--blue); }
+  .opp-card.status-scored { border-left: 3px solid var(--purple); }
+  .opp-card.status-graduated { border-left: 3px solid var(--orange); }
+  .opp-card.status-killed { border-left: 3px solid var(--red); }
 
-  .dash-nav-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .dash-nav-right a {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    text-decoration: none;
-  }
-
-  .dash-nav-right a:hover { color: var(--orange); }
-
-  .logout-btn {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 6px 12px;
-    cursor: pointer;
-    border-radius: 2px;
-    letter-spacing: 0.05em;
-  }
-
-  .logout-btn:hover { border-color: var(--orange); color: var(--orange); }
-
-  /* Content */
-  .dash-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 32px;
-  }
-
-  /* KPI Row */
-  .kpi-row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 2px;
-    margin-bottom: 32px;
-  }
-
-  .kpi {
-    background: var(--surface);
-    padding: 24px 20px;
-    text-align: center;
-  }
-
-  .kpi-value {
-    font-family: var(--pixel);
-    font-size: 18px;
-    color: var(--orange);
-    margin-bottom: 6px;
-    line-height: 1.2;
-  }
-
-  .kpi-label {
-    font-family: var(--mono);
-    font-size: 9px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  /* Section */
-  .dash-section {
-    margin-bottom: 32px;
-  }
-
-  .dash-section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 16px;
-  }
-
-  .dash-section-title {
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .dash-section-badge {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-  }
-
-  /* Table */
-  .dash-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .dash-table th {
-    font-family: var(--mono);
-    font-size: 9px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-align: left;
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    font-weight: 400;
-  }
-
-  .dash-table td {
-    font-size: 13px;
-    padding: 14px 12px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-  }
-
-  .dash-table tr:hover td {
-    background: var(--surface);
-  }
-
-  .dash-table .muted { color: var(--text-muted); font-size: 12px; }
-
-  /* Status badges */
+  .opp-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+  .opp-name { font-family: var(--sans); font-size: 22px; font-weight: 700; }
+  .opp-badges { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  
   .badge {
-    font-family: var(--pixel);
-    font-size: 8px;
-    padding: 4px 10px;
-    border-radius: 2px;
-    letter-spacing: 1px;
-    display: inline-block;
+    font-family: var(--mono); font-size: 11px; padding: 4px 10px;
+    border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;
+  }
+  .badge-active { background: var(--green-dim); color: var(--green); }
+  .badge-raw { background: rgba(120,119,112,0.15); color: var(--text-muted); }
+  .badge-qualifying { background: var(--blue-dim); color: var(--blue); }
+  .badge-scored { background: var(--purple-dim); color: var(--purple); }
+  .badge-graduated { background: var(--orange-glow); color: var(--orange); }
+  .badge-killed { background: var(--red-dim); color: var(--red); }
+  
+  .score-badge {
+    font-family: var(--pixel); font-size: 13px; padding: 4px 12px;
+    border-radius: 20px; background: var(--orange-glow); color: var(--orange);
   }
 
-  .badge-build { border: 1px solid var(--orange); color: var(--orange); }
-  .badge-qualifying { border: 1px solid var(--yellow); color: var(--yellow); }
-  .badge-scored { border: 1px solid var(--green); color: var(--green); }
-  .badge-new { border: 1px solid var(--text-muted); color: var(--text-muted); }
+  .opp-niche { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; font-family: var(--mono); }
+  
+  .opp-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 16px; }
+  .detail-group h4 { font-family: var(--mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .detail-group p { font-size: 14px; color: var(--text); line-height: 1.5; }
 
-  /* Score */
-  .score {
-    font-family: var(--mono);
-    font-weight: 700;
+  .opp-hypothesis { background: var(--surface-2); border-radius: 8px; padding: 16px; margin-bottom: 16px; font-size: 14px; line-height: 1.6; color: var(--text); border-left: 2px solid var(--orange); }
+
+  .opp-questions { margin-top: 16px; }
+  .opp-questions h4 { font-family: var(--mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .opp-questions ul { list-style: none; }
+  .opp-questions li { font-size: 13px; color: var(--text-muted); padding: 4px 0; font-family: var(--mono); }
+  .opp-questions li::before { content: '→ '; color: var(--orange); }
+
+  .opp-tags { display: flex; gap: 6px; margin-top: 16px; flex-wrap: wrap; }
+  .tag { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 4px; background: var(--surface-3); color: var(--text-muted); }
+
+  .opp-meta { display: flex; gap: 16px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+  .meta-item { font-family: var(--mono); font-size: 11px; color: var(--text-muted); }
+  .meta-item span { color: var(--text); }
+
+  /* Gates */
+  .gates { display: flex; gap: 12px; margin-top: 16px; }
+  .gate {
+    font-family: var(--mono); font-size: 11px; padding: 6px 12px;
+    border-radius: 8px; border: 1px solid var(--border);
   }
+  .gate-pending { color: var(--text-muted); }
+  .gate-passed { color: var(--green); border-color: var(--green); background: var(--green-dim); }
+  .gate-failed { color: var(--red); border-color: var(--red); background: var(--red-dim); }
+  .gate-pre { color: var(--yellow); border-color: var(--yellow); background: var(--yellow-dim); }
 
-  .score-high { color: var(--green); }
-  .score-mid { color: var(--yellow); }
-  .score-low { color: var(--red); }
+  /* Loading */
+  .loading { text-align: center; padding: 60px; font-family: var(--mono); color: var(--text-muted); }
+  .loading .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--orange); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 12px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Expenses */
-  .expense-row {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 2px;
-    margin-bottom: 2px;
-  }
-
-  .expense-cell {
-    background: var(--surface);
-    padding: 14px 16px;
-    font-size: 13px;
-  }
-
-  .expense-cell.label { color: var(--text-muted); font-size: 12px; }
-
-  /* Todo list */
-  .todo-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-  }
-
-  .todo-check {
-    width: 16px;
-    height: 16px;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .todo-check.done {
-    background: var(--orange);
-    border-color: var(--orange);
-  }
-
-  .todo-item.done { color: var(--text-muted); text-decoration: line-through; }
-
-  .todo-tag {
-    font-family: var(--mono);
-    font-size: 9px;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-    margin-left: auto;
-    flex-shrink: 0;
-  }
-
-  /* Two column */
-  .two-col {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-  }
-
-  /* Signals */
-  .signal-item {
-    padding: 14px 0;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .signal-text {
-    font-size: 13px;
-    line-height: 1.5;
-    margin-bottom: 6px;
-  }
-
-  .signal-meta {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-  }
-
-  @media (max-width: 900px) {
-    .kpi-row { grid-template-columns: repeat(2, 1fr); }
-    .two-col { grid-template-columns: 1fr; }
-    .expense-row { grid-template-columns: 1fr 1fr; }
-    .dash-content { padding: 16px; }
-    .dash-nav { padding: 12px 16px; }
+  /* Responsive */
+  @media (max-width: 640px) {
+    nav { padding: 16px; }
+    .container { padding: 20px 16px; }
+    .dash-header h1 { font-size: 14px; }
+    .stat-card .value { font-size: 18px; }
+    .pipeline { gap: 4px; }
+    .pipeline-stage { min-width: 70px; padding: 8px 4px; }
+    .pipeline-stage .count { font-size: 16px; }
+    .opp-details { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
+  <nav>
+    <a href="/" class="nav-logo">REX 🦖</a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/dashboard">Pipeline</a>
+    </div>
+  </nav>
 
-<!-- LOGIN -->
-<div class="login-screen" id="loginScreen">
-  <div class="login-logo">REX_</div>
-  <div class="login-sub">OPERATOR DASHBOARD</div>
-  <div class="login-form">
-    <input type="password" id="loginPass" placeholder="Enter access code" onkeydown="if(event.key==='Enter')doLogin()">
-    <button onclick="doLogin()">→</button>
+  <div class="container">
+    <div class="dash-header">
+      <h1>OPPORTUNITY PIPELINE</h1>
+      <p>Napkin Labs — venture qualification & tracking</p>
+      <div class="last-updated" id="lastUpdated">Loading...</div>
+    </div>
+
+    <div class="stats-row" id="statsRow">
+      <div class="stat-card"><div class="label">Total Opportunities</div><div class="value" id="statTotal">—</div></div>
+      <div class="stat-card"><div class="label">Active Ventures</div><div class="value" id="statActive">—</div></div>
+      <div class="stat-card"><div class="label">In Pipeline</div><div class="value" id="statPipeline">—</div></div>
+      <div class="stat-card"><div class="label">Graduated</div><div class="value" id="statGraduated">—</div></div>
+    </div>
+
+    <div class="pipeline" id="pipelineBar"></div>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <div>Loading pipeline...</div>
+    </div>
+
+    <div class="opp-grid" id="oppGrid"></div>
   </div>
-  <div class="login-error" id="loginError"></div>
-</div>
-
-<!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
-
-  <div class="dash-nav">
-    <div class="dash-nav-left">
-      <a href="/" class="dash-logo">REX_</a>
-      <span class="dash-nav-tag">Dashboard</span>
-    </div>
-    <div class="dash-nav-right">
-      <a href="/" >Public Site</a>
-      <button class="logout-btn" onclick="doLogout()">LOG OUT</button>
-    </div>
-  </div>
-
-  <div class="dash-content">
-
-    <!-- KPIs -->
-    <div class="kpi-row">
-      <div class="kpi">
-        <div class="kpi-value">1</div>
-        <div class="kpi-label">Active Experiments</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-value">6+</div>
-        <div class="kpi-label">Pipeline</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-value">€0</div>
-        <div class="kpi-label">Revenue</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-value">€1,080</div>
-        <div class="kpi-label">Total Spent</div>
-      </div>
-      <div class="kpi">
-        <div class="kpi-value">€190</div>
-        <div class="kpi-label">Monthly Burn</div>
-      </div>
-    </div>
-
-    <!-- Active Experiments -->
-    <div class="dash-section">
-      <div class="dash-section-header">
-        <div class="dash-section-title">Active Experiments</div>
-      </div>
-      <table class="dash-table">
-        <thead>
-          <tr>
-            <th>Experiment</th>
-            <th>Niche</th>
-            <th>Score</th>
-            <th>Status</th>
-            <th>Stage 1 Kill</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Presswave</strong></td>
-            <td class="muted">Solo AI founders — press outreach</td>
-            <td><span class="score score-high">8.60</span></td>
-            <td><span class="badge badge-build">BUILD</span></td>
-            <td class="muted">Not set</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Pipeline -->
-    <div class="dash-section">
-      <div class="dash-section-header">
-        <div class="dash-section-title">Qualification Pipeline</div>
-        <div class="dash-section-badge">Scanning 3 source databases</div>
-      </div>
-      <table class="dash-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Opportunity</th>
-            <th>Micro Niche</th>
-            <th>Source</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="muted">OPP-2</td>
-            <td>Launch Checklist Tool</td>
-            <td class="muted">Solo AI founders missing critical launch steps</td>
-            <td class="muted">Domain knowledge</td>
-            <td><span class="badge badge-qualifying">QUALIFYING</span></td>
-          </tr>
-          <tr>
-            <td class="muted">OPP-3</td>
-            <td>Changelog Generator</td>
-            <td class="muted">Solo devs who never write changelogs</td>
-            <td class="muted">Domain knowledge</td>
-            <td><span class="badge badge-qualifying">QUALIFYING</span></td>
-          </tr>
-          <tr>
-            <td class="muted">OPP-4</td>
-            <td>Testimonial Collector</td>
-            <td class="muted">Solo founders needing social proof</td>
-            <td class="muted">Domain knowledge</td>
-            <td><span class="badge badge-qualifying">QUALIFYING</span></td>
-          </tr>
-          <tr>
-            <td class="muted">OPP-5</td>
-            <td>Partnership Outreach</td>
-            <td class="muted">Micro-SaaS founders seeking integrations</td>
-            <td class="muted">Domain knowledge</td>
-            <td><span class="badge badge-qualifying">QUALIFYING</span></td>
-          </tr>
-          <tr>
-            <td class="muted">OPP-6</td>
-            <td>Demo Video Script Gen</td>
-            <td class="muted">Founders who need demo videos but can't script</td>
-            <td class="muted">Domain knowledge</td>
-            <td><span class="badge badge-qualifying">QUALIFYING</span></td>
-          </tr>
-          <tr>
-            <td class="muted">OPP-7</td>
-            <td>AI Legal Page Generator</td>
-            <td class="muted">AI founders needing AI-specific legal pages</td>
-            <td class="muted">Domain knowledge</td>
-            <td><span class="badge badge-qualifying">QUALIFYING</span></td>
-          </tr>
-          <tr>
-            <td class="muted">OPP-8</td>
-            <td>AI Meal Planner</td>
-            <td class="muted">Busy families — meal planning via AI bot</td>
-            <td class="muted">ideas.rip</td>
-            <td><span class="badge badge-new">NEW</span></td>
-          </tr>
-          <tr>
-            <td class="muted">OPP-9</td>
-            <td>Patent Registration Optimizer</td>
-            <td class="muted">Startups overpaying on IP registration</td>
-            <td class="muted">ideas.rip</td>
-            <td><span class="badge badge-new">NEW</span></td>
-          </tr>
-          <tr>
-            <td class="muted">OPP-10</td>
-            <td>Tamper-Proof Site Blocker</td>
-            <td class="muted">Tech workers who bypass their own blockers</td>
-            <td class="muted">HN</td>
-            <td><span class="badge badge-new">NEW</span></td>
-          </tr>
-          <tr>
-            <td class="muted">OPP-11</td>
-            <td>RAG Pipeline DSL</td>
-            <td class="muted">ML engineers writing boilerplate embedding code</td>
-            <td class="muted">HN</td>
-            <td><span class="badge badge-new">NEW</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="two-col">
-
-      <!-- Open Items -->
-      <div class="dash-section">
-        <div class="dash-section-header">
-          <div class="dash-section-title">Open Items</div>
-        </div>
-        <div class="todo-item">
-          <div class="todo-check"></div>
-          Stripe integration
-          <span class="todo-tag">RODGER</span>
-        </div>
-        <div class="todo-item">
-          <div class="todo-check"></div>
-          Presshunt DB export (€250)
-          <span class="todo-tag">PENDING APPROVAL</span>
-        </div>
-        <div class="todo-item">
-          <div class="todo-check"></div>
-          Gmail app password for Rex
-          <span class="todo-tag">RODGER</span>
-        </div>
-        <div class="todo-item">
-          <div class="todo-check"></div>
-          Connect iamrex.xyz domain to Vercel
-          <span class="todo-tag">RODGER</span>
-        </div>
-        <div class="todo-item">
-          <div class="todo-check"></div>
-          Register presswave.xyz domain
-          <span class="todo-tag">RODGER</span>
-        </div>
-        <div class="todo-item">
-          <div class="todo-check"></div>
-          Create accounts: IdeaBrowser, BigIdeasDB, Product Hunt, G2, YouTube API
-          <span class="todo-tag">RODGER</span>
-        </div>
-        <div class="todo-item">
-          <div class="todo-check"></div>
-          Remove fake testimonials from Presswave
-          <span class="todo-tag">REX</span>
-        </div>
-        <div class="todo-item">
-          <div class="todo-check"></div>
-          Set Stage 1 kill date for Presswave
-          <span class="todo-tag">DECISION</span>
-        </div>
-        <div class="todo-item done">
-          <div class="todo-check done"></div>
-          Brave Search API key
-          <span class="todo-tag">DONE</span>
-        </div>
-        <div class="todo-item done">
-          <div class="todo-check done"></div>
-          X/Twitter API connected
-          <span class="todo-tag">DONE</span>
-        </div>
-        <div class="todo-item done">
-          <div class="todo-check done"></div>
-          GitHub repo + Vercel deploy
-          <span class="todo-tag">DONE</span>
-        </div>
-        <div class="todo-item done">
-          <div class="todo-check done"></div>
-          Landing page live
-          <span class="todo-tag">DONE</span>
-        </div>
-        <div class="todo-item done">
-          <div class="todo-check done"></div>
-          Daily brief cron (06:00 CET)
-          <span class="todo-tag">DONE</span>
-        </div>
-      </div>
-
-      <!-- Expenses + Signals -->
-      <div>
-        <div class="dash-section">
-          <div class="dash-section-header">
-            <div class="dash-section-title">Expenses</div>
-          </div>
-          <table class="dash-table">
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Cost</th>
-                <th>Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Claude Max Pro</td>
-                <td>€180/mo</td>
-                <td class="muted">Recurring</td>
-              </tr>
-              <tr>
-                <td>X/Twitter API</td>
-                <td>$5/mo</td>
-                <td class="muted">Recurring</td>
-              </tr>
-              <tr>
-                <td>Brave Search</td>
-                <td>$5/mo</td>
-                <td class="muted">Recurring</td>
-              </tr>
-              <tr>
-                <td>iamrex.xyz domain</td>
-                <td>€12/yr</td>
-                <td class="muted">Annual</td>
-              </tr>
-              <tr>
-                <td>Felix (setup)</td>
-                <td>€895</td>
-                <td class="muted">One-time</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="dash-section">
-          <div class="dash-section-header">
-            <div class="dash-section-title">Latest Signals</div>
-          </div>
-          <div class="signal-item">
-            <div class="signal-text">Fortune: "Ideal number of employees is zero" — viral essay shifting the narrative from AI-replaces to AI-removes-need.</div>
-            <div class="signal-meta">2026-03-05 · Fortune · High relevance</div>
-          </div>
-          <div class="signal-item">
-            <div class="signal-text">Anthropic CEO: 70-80% confidence first $1B single-employee company happens in 2026.</div>
-            <div class="signal-meta">2026-01 · Conference · High relevance</div>
-          </div>
-          <div class="signal-item">
-            <div class="signal-text">3 Business Insider pieces on solo AI founders in 2 weeks. Media actively seeking these stories.</div>
-            <div class="signal-meta">2026-03 · BI · Presswave signal</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
 
 <script>
-const ACCESS_CODE = 'napkin2026';
+const SUPABASE_URL = 'https://vfjsyyextdvrvtirdpbh.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZmanN5eWV4dGR2cnZ0aXJkcGJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzNDk5MTYsImV4cCI6MjA1NjkyNTkxNn0.1FTGFHiydMwJh0btrE6Eif5ElmK5GXJKF97ae2as02M';
 
-function doLogin() {
-  const pass = document.getElementById('loginPass').value;
-  if (pass === ACCESS_CODE) {
-    localStorage.setItem('rex_auth', 'true');
-    showDashboard();
-  } else {
-    document.getElementById('loginError').textContent = 'Invalid access code';
+const STATUS_ORDER = ['active', 'qualifying', 'scored', 'raw', 'graduated', 'killed'];
+const STAGES = [
+  { key: 'raw', label: 'Raw' },
+  { key: 'qualifying', label: 'Qualifying' },
+  { key: 'scored', label: 'Scored' },
+  { key: 'active', label: 'Active' },
+  { key: 'graduated', label: 'Graduated' },
+  { key: 'killed', label: 'Killed' }
+];
+
+async function loadOpportunities() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/opportunities?order=id.asc`, {
+      headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}` }
+    });
+    const opps = await res.json();
+    
+    document.getElementById('loading').style.display = 'none';
+    
+    // Sort by status priority
+    opps.sort((a, b) => STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status));
+
+    // Stats
+    document.getElementById('statTotal').textContent = opps.length;
+    document.getElementById('statActive').textContent = opps.filter(o => o.status === 'active').length;
+    document.getElementById('statPipeline').textContent = opps.filter(o => ['raw','qualifying','scored'].includes(o.status)).length;
+    document.getElementById('statGraduated').textContent = opps.filter(o => o.status === 'graduated').length;
+
+    // Pipeline bar
+    const pipelineBar = document.getElementById('pipelineBar');
+    STAGES.forEach(stage => {
+      const count = opps.filter(o => o.status === stage.key).length;
+      const el = document.createElement('div');
+      el.className = `pipeline-stage ${stage.key}`;
+      el.innerHTML = `<span class="count">${count}</span>${stage.label}`;
+      pipelineBar.appendChild(el);
+    });
+
+    // Last updated
+    const latest = opps.reduce((max, o) => o.updated_at > max ? o.updated_at : max, '');
+    if (latest) {
+      const d = new Date(latest);
+      document.getElementById('lastUpdated').textContent = `Last updated: ${d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at ${d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+    }
+
+    // Cards
+    const grid = document.getElementById('oppGrid');
+    opps.forEach(opp => {
+      const card = document.createElement('div');
+      card.className = `opp-card status-${opp.status}`;
+
+      const scoreHtml = opp.score ? `<span class="score-badge">${opp.score}/10</span>` : '';
+      
+      const gateClass = (s) => {
+        if (!s || s === 'pending') return 'gate-pending';
+        if (s === 'passed') return 'gate-passed';
+        if (s === 'failed') return 'gate-failed';
+        return 'gate-pre';
+      };
+
+      const questionsHtml = opp.open_questions && opp.open_questions.length > 0 ? `
+        <div class="opp-questions">
+          <h4>Open Questions</h4>
+          <ul>${opp.open_questions.map(q => `<li>${q}</li>`).join('')}</ul>
+        </div>
+      ` : '';
+
+      const tagsHtml = opp.tags && opp.tags.length > 0 ? `
+        <div class="opp-tags">${opp.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      ` : '';
+
+      card.innerHTML = `
+        <div class="opp-top">
+          <span class="opp-name">${opp.name}</span>
+          <div class="opp-badges">
+            <span class="badge badge-${opp.status}">${opp.status}</span>
+            ${scoreHtml}
+          </div>
+        </div>
+        <div class="opp-niche">${opp.niche || ''}</div>
+        ${opp.hypothesis ? `<div class="opp-hypothesis">${opp.hypothesis}</div>` : ''}
+        <div class="opp-details">
+          <div class="detail-group">
+            <h4>Target Market</h4>
+            <p>${opp.target_market || '—'}</p>
+          </div>
+          <div class="detail-group">
+            <h4>Revenue Model</h4>
+            <p>${opp.revenue_model || '—'}</p>
+          </div>
+          <div class="detail-group">
+            <h4>Pricing</h4>
+            <p>${opp.pricing || '—'}</p>
+          </div>
+          <div class="detail-group">
+            <h4>Source</h4>
+            <p>${opp.source || '—'}</p>
+          </div>
+        </div>
+        ${opp.notes ? `<div class="detail-group" style="margin-bottom:16px"><h4>Notes</h4><p style="font-size:13px;color:var(--text-muted)">${opp.notes}</p></div>` : ''}
+        <div class="gates">
+          <div class="gate ${gateClass(opp.stage1_status)}">Stage 1: ${opp.stage1_status || 'pending'}</div>
+          <div class="gate ${gateClass(opp.stage2_status)}">Stage 2: ${opp.stage2_status || 'pending'}</div>
+        </div>
+        ${questionsHtml}
+        ${tagsHtml}
+        <div class="opp-meta">
+          <div class="meta-item">Filed: <span>${opp.filed_at || '—'}</span></div>
+          ${opp.kill_date ? `<div class="meta-item">Kill date: <span style="color:var(--red)">${opp.kill_date}</span></div>` : ''}
+          <div class="meta-item">Updated: <span>${opp.updated_at ? new Date(opp.updated_at).toLocaleDateString() : '—'}</span></div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+  } catch (err) {
+    document.getElementById('loading').innerHTML = `<div style="color:var(--red)">Error loading pipeline: ${err.message}</div>`;
   }
 }
 
-function doLogout() {
-  localStorage.removeItem('rex_auth');
-  document.getElementById('dashboard').classList.remove('visible');
-  document.getElementById('loginScreen').classList.remove('hidden');
-  document.getElementById('loginPass').value = '';
-}
-
-function showDashboard() {
-  document.getElementById('loginScreen').classList.add('hidden');
-  document.getElementById('dashboard').classList.add('visible');
-}
-
-// Auto-login if previously authenticated
-if (localStorage.getItem('rex_auth') === 'true') {
-  showDashboard();
-}
+loadOpportunities();
 </script>
-
 </body>
 </html>
